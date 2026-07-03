@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>StudyCircle — find your study group</title>
+  <meta name="description" content="StudyCircle matches you with compatible study partners in your course using an explainable, weighted scoring algorithm — availability, topics, study style, and goals." />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1>Study<span class="accent">Circle</span></h1>
+      <p class="tagline">Find the study group you'd never find by luck — matched on <strong>when you're free</strong>, <strong>what you're stuck on</strong>, and <strong>how you like to study</strong>.</p>
+      <nav class="tabs" role="tablist">
+        <button class="tab active" data-tab="match" role="tab" aria-selected="true">Find my matches</button>
+        <button class="tab" data-tab="groups" role="tab" aria-selected="false">Cohort groups</button>
+        <button class="tab" data-tab="how" role="tab" aria-selected="false">How it works</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- ============================== TAB: FIND MY MATCHES -->
+    <section id="tab-match" class="tab-panel active">
+      <div class="grid-2">
+        <div class="card">
+          <h2>Your profile</h2>
+          <form id="profile-form" autocomplete="off">
+            <label for="f-name">Name</label>
+            <input id="f-name" type="text" required maxlength="40" placeholder="e.g. Ujjwal B." />
+
+            <label for="f-course">Course</label>
+            <div class="row">
+              <select id="f-course"></select>
+              <input id="f-course-custom" type="text" placeholder="or type a new course…" maxlength="30" />
+            </div>
+
+            <label for="f-topics">Topics you want to work on <span class="hint">(comma-separated)</span></label>
+            <input id="f-topics" type="text" placeholder="e.g. recursion, big-o, linked lists" />
+
+            <label>When are you free? <span class="hint">(tap slots)</span></label>
+            <div id="availability-grid" class="avail-grid" aria-label="Weekly availability picker"></div>
+
+            <div class="row">
+              <div class="col">
+                <label for="f-style">Study style</label>
+                <select id="f-style"></select>
+              </div>
+              <div class="col">
+                <label for="f-goal">Your goal</label>
+                <select id="f-goal"></select>
+              </div>
+              <div class="col">
+                <label for="f-size">Max group size</label>
+                <select id="f-size">
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4" selected>4</option>
+                  <option value="5">5</option>
+                </select>
+              </div>
+            </div>
+
+            <button type="submit" class="btn primary">Find my matches</button>
+            <p id="form-error" class="error" role="alert" hidden></p>
+          </form>
+        </div>
+
+        <div class="card">
+          <h2>Your matches</h2>
+          <p id="match-empty" class="muted">Fill in your profile and hit <em>Find my matches</em>. You'll be matched against the demo cohort (and anyone else who signed up in this browser).</p>
+          <div id="match-results"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================== TAB: COHORT GROUPS -->
+    <section id="tab-groups" class="tab-panel">
+      <div class="card">
+        <h2>Auto-formed groups by course</h2>
+        <p class="muted">The greedy max-min algorithm forms cohesive groups: every member must score ≥ 40 with <em>every</em> other member — no weak links.</p>
+        <div class="row">
+          <select id="g-course"></select>
+          <button id="g-form" class="btn primary">Form groups</button>
+        </div>
+        <div id="group-results"></div>
+      </div>
+    </section>
+
+    <!-- ============================== TAB: HOW IT WORKS -->
+    <section id="tab-how" class="tab-panel">
+      <div class="card">
+        <h2>How the matching works</h2>
+        <p>Every pair of students in the same course gets a compatibility score from 0–100:</p>
+        <ul class="weights">
+          <li><span class="w">40%</span> <strong>Availability overlap</strong> — shared slots on a 7-day × 4-block grid (saturates at 4 shared slots)</li>
+          <li><span class="w">30%</span> <strong>Topic overlap</strong> — Jaccard similarity of the topics you each listed</li>
+          <li><span class="w">15%</span> <strong>Study-style affinity</strong> — same style is ideal; discussion + practice pairs well, discussion + quiet co-study doesn't</li>
+          <li><span class="w">15%</span> <strong>Goal alignment</strong> — "ace the course" and "just need homework help" is the weakest pairing</li>
+        </ul>
+        <p><strong>Hard vetoes:</strong> different course, or zero shared availability → score 0. A group you can never meet with isn't a group.</p>
+        <h3>Group formation</h3>
+        <p>Groups are built greedily with a <strong>max-min</strong> rule: seed with the best remaining pair, then repeatedly add the student whose <em>minimum</em> score against all current members is highest (and ≥ 40), until the group reaches the smallest preferred size among its members. This keeps groups cohesive — nobody is a bad fit for anybody.</p>
+        <p class="muted">This is a client-side demo: the 16-student cohort is seeded sample data, and profiles you create are stored only in your browser (localStorage). The full engine is unit-tested — see the <a href="https://github.com/ujjwalbhatiaa/study-group-matcher" target="_blank" rel="noopener">GitHub repo</a>.</p>
+        <button id="reset-demo" class="btn danger">Reset demo data</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Built by <a href="https://ujjwalbhatiaa.github.io/Ujjwalbhatia/" target="_blank" rel="noopener">Ujjwal Bhatia</a> · vanilla JS, no frameworks, no backend · <a href="https://github.com/ujjwalbhatiaa/study-group-matcher" target="_blank" rel="noopener">Source on GitHub</a></p>
+    </div>
+  </footer>
+
+  <script src="js/matcher.js"></script>
+  <script src="js/sample-data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
