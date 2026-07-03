@@ -1,0 +1,182 @@
+/* StudyCircle — demo UI styles. Mobile-first, no framework. */
+
+:root {
+  --bg: #0f1220;
+  --surface: #181c30;
+  --surface-2: #21263f;
+  --text: #e8eaf6;
+  --muted: #9aa0c3;
+  --accent: #6c8cff;
+  --accent-2: #43d9a3;
+  --danger: #ff6b81;
+  --border: #2c3252;
+  --radius: 12px;
+  font-size: 16px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  line-height: 1.55;
+}
+
+.container { max-width: 1000px; margin: 0 auto; padding: 0 1rem; }
+
+/* ------------------------------------------------------------- header */
+.site-header {
+  padding: 2.2rem 0 0;
+  background: linear-gradient(160deg, #141834 0%, var(--bg) 70%);
+  border-bottom: 1px solid var(--border);
+}
+.site-header h1 { margin: 0; font-size: 2.1rem; letter-spacing: -0.02em; }
+.accent { color: var(--accent); }
+.tagline { color: var(--muted); max-width: 46rem; margin: 0.4rem 0 1.4rem; }
+
+.tabs { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.tab {
+  background: none; border: none; color: var(--muted);
+  padding: 0.6rem 1rem; font-size: 1rem; cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+.tab:hover { color: var(--text); }
+.tab.active { color: var(--text); border-bottom-color: var(--accent); font-weight: 600; }
+
+/* ------------------------------------------------------------- layout */
+main { padding: 1.6rem 0 3rem; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr; gap: 1.2rem; }
+@media (min-width: 820px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.4rem;
+  margin-bottom: 1.2rem;
+}
+.card h2 { margin-top: 0; font-size: 1.25rem; }
+
+/* ------------------------------------------------------------- form */
+label { display: block; margin: 0.9rem 0 0.3rem; font-weight: 600; font-size: 0.95rem; }
+.hint { color: var(--muted); font-weight: 400; font-size: 0.85rem; }
+
+input[type="text"], select {
+  width: 100%;
+  padding: 0.55rem 0.7rem;
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.95rem;
+}
+input:focus, select:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+.row { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: flex-end; }
+.row > * { flex: 1 1 10rem; }
+.col { display: flex; flex-direction: column; }
+.col label { margin-top: 0.9rem; }
+
+.btn {
+  margin-top: 1.1rem;
+  padding: 0.65rem 1.3rem;
+  border: none; border-radius: 8px;
+  font-size: 1rem; font-weight: 600; cursor: pointer;
+  color: #fff; background: var(--surface-2);
+}
+.btn.primary { background: var(--accent); color: #0d1020; }
+.btn.primary:hover { filter: brightness(1.1); }
+.btn.danger { background: transparent; color: var(--danger); border: 1px solid var(--danger); }
+.btn.danger:hover { background: rgba(255, 107, 129, 0.1); }
+
+.error { color: var(--danger); font-size: 0.9rem; }
+.muted { color: var(--muted); }
+
+/* ------------------------------------------------------------- availability grid */
+.avail-grid {
+  display: grid;
+  grid-template-columns: 4.6rem repeat(7, 1fr);
+  gap: 3px;
+  margin-top: 0.3rem;
+  user-select: none;
+}
+.avail-grid .corner, .avail-grid .day-h, .avail-grid .block-h {
+  font-size: 0.72rem; color: var(--muted); text-align: center;
+  padding: 0.25rem 0.1rem;
+}
+.avail-grid .block-h { text-align: right; padding-right: 0.4rem; }
+.avail-cell {
+  aspect-ratio: 1.6;
+  min-height: 26px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.avail-cell:hover { border-color: var(--accent); }
+.avail-cell.on { background: var(--accent); border-color: var(--accent); }
+
+/* ------------------------------------------------------------- match cards */
+.match-card {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.9rem 1rem;
+  margin-top: 0.8rem;
+  display: flex; gap: 0.9rem; align-items: flex-start;
+}
+.score-badge {
+  flex: 0 0 auto;
+  width: 3.2rem; height: 3.2rem; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 1.05rem;
+  background: conic-gradient(var(--accent-2) calc(var(--pct) * 1%), var(--surface) 0);
+}
+.score-badge span {
+  background: var(--surface-2); border-radius: 50%;
+  width: 2.5rem; height: 2.5rem;
+  display: flex; align-items: center; justify-content: center;
+}
+.match-card h3 { margin: 0 0 0.15rem; font-size: 1.05rem; }
+.match-card .meta { color: var(--muted); font-size: 0.82rem; margin-bottom: 0.3rem; }
+.reasons { margin: 0.2rem 0 0; padding-left: 1.1rem; font-size: 0.88rem; }
+.reasons li { margin-bottom: 0.15rem; }
+
+/* ------------------------------------------------------------- group cards */
+.group-card {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem 1.1rem;
+  margin-top: 0.9rem;
+}
+.group-card h3 { margin: 0 0 0.4rem; font-size: 1.05rem; }
+.group-card .members { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.5rem; }
+.chip {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 999px; padding: 0.2rem 0.7rem; font-size: 0.85rem;
+}
+.chip.you { border-color: var(--accent-2); color: var(--accent-2); font-weight: 600; }
+.group-card .slots { font-size: 0.88rem; color: var(--muted); }
+.group-card .slots strong { color: var(--accent-2); }
+
+/* ------------------------------------------------------------- how-it-works */
+.weights { list-style: none; padding: 0; }
+.weights li { margin-bottom: 0.5rem; }
+.weights .w {
+  display: inline-block; width: 3.2rem; font-weight: 700; color: var(--accent);
+}
+
+/* ------------------------------------------------------------- footer */
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 1.2rem 0;
+  color: var(--muted); font-size: 0.9rem;
+}
+a { color: var(--accent); }
